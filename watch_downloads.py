@@ -42,15 +42,18 @@ for changes in watch(ENV.watch_dir):
     for entry in changes:
         
         # variables
+        document_types = ["txt", "pdf", "torrent", "gz", "7z", "zip", ]
+        video_types = ["mp4", "avi", "mkv"]
         action = str(entry[0]).split('.')[1]
         file_path = entry[1]
         file_name = os.path.basename(file_path)
 
         write_log(f"{str(now)[0:str(now).find('.', 0)]} -- {file_path} ---> {action}")
 
-        if file_path.endswith("txt") and action == "added":
-            new_file_path = make_folder(ENV.dest_dir_root, "Documents")
-            os.rename(file_path, new_file_path + file_name)
+        for file_type in document_types:
+            if file_path.endswith(file_type) and action == "added":
+                new_file_path = make_folder(ENV.dest_dir_root, "Documents")
+                os.rename(file_path, new_file_path + file_name)
 
 # os.rename("path/to/current/file.foo", "path/to/new/destination/for/file.foo")
 #  f"{settings.dest_dir_root}/"
